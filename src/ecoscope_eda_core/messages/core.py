@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, Any
+from typing import Optional, Any, Dict
 from pydantic import BaseModel, Field, computed_field
 from uuid import UUID, uuid4
 from zoneinfo import ZoneInfo
@@ -26,6 +26,13 @@ class Message(BaseModel):
         default_factory=dict,
         example="{}",
         description="Message payload. This can be overwritten in specific commands or events",
+    )
+    attributes: Optional[Dict[str, str]] = (
+        Field(  # Some message brokers such as GCP PubSub support key/value attributes
+            default_factory=dict,
+            example='{"key": "value"}',
+            description="Message attributes. This can be overwritten in specific commands or events",
+        )
     )
 
     @computed_field  # type: ignore[misc]

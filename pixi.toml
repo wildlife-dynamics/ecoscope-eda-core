@@ -10,6 +10,8 @@ version = "0.1.0"
 [dependencies]
 python = ">=3.10"
 pydantic = ">=2.0.0"
+gcloud-aio-pubsub = ">=6.1.0,<7"
+stamina = ">=25.1.0,<26"
 
 
 # Uncomment these sections when ready to build a Conda package
