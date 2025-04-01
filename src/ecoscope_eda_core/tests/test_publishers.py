@@ -15,8 +15,9 @@ async def test_gcp_pubsub_publisher_minimal(mocker, pubsub_client_mock):
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="prefix-dev",
-            conda_package="workflow-events-custom-pkg",
+            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
+            conda_package="custom-events-workflow-pkg",
+            conda_package_version="0.0.65",
             command="run",
             invoker_kwargs={
                 "mock_io": True,

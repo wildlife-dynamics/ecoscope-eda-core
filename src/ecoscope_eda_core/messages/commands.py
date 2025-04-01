@@ -13,6 +13,7 @@ class InvokerType(str, Enum):
 class RunWorkflowParams(BaseModel):
     conda_channel: str = Field(..., title="Conda channel")
     conda_package: str = Field(..., title="Package name")
+    conda_package_version: str = Field(..., title="Package version")
     invoker_type: InvokerType = Field(
         InvokerType.BLOCKING_SUBPROCESS, title="Invoker type"
     )
