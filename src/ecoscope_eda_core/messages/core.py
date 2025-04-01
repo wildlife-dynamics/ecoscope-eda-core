@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import Optional, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 from uuid import UUID, uuid4
 from zoneinfo import ZoneInfo
 
 
 class Message(BaseModel):
     """Base class for messages in event-driven architecture."""
+
     SCHEMA_VERSION: str = "v1"
 
     message_id: UUID = Field(default_factory=uuid4)
@@ -27,6 +28,7 @@ class Message(BaseModel):
         description="Message payload. This can be overwritten in specific commands or events",
     )
 
+    @computed_field  # type: ignore[misc]
     @property
     def message_type(self) -> str:
         return self.__class__.__name__
@@ -34,9 +36,11 @@ class Message(BaseModel):
 
 class Command(Message):
     """Base class for commands in event-driven architecture."""
+
     pass
 
 
 class Event(Message):
     """Base class for events in event-driven architecture."""
+
     pass
