@@ -1,6 +1,6 @@
 import pytest
 from ..publishers import GCPPubSubPublisher
-from ..messages import RunWorkflow
+from ..messages import RunWorkflow, RunWorkflowParams
 
 
 pytestmark = pytest.mark.asyncio
@@ -14,14 +14,16 @@ async def test_gcp_pubsub_publisher_minimal(mocker, pubsub_client_mock):
 
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
-        conda_channel="prefix-dev",
-        conda_package="workflow-events-custom-pkg",
-        command="run",
-        invoker_kwargs={
-            "mock_io": True,
-            "results_url": "gs://bucket/results",
-            "filter_events": {"min_x": -98.567, "max_x": 53.234},
-        },
+        payload=RunWorkflowParams(
+            conda_channel="prefix-dev",
+            conda_package="workflow-events-custom-pkg",
+            command="run",
+            invoker_kwargs={
+                "mock_io": True,
+                "results_url": "gs://bucket/results",
+                "filter_events": {"min_x": -98.567, "max_x": 53.234},
+            },
+        )
     )
     await publisher.publish(messages=[run_workflow_command], topic="workflow-requests")
 
