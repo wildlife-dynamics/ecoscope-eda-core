@@ -23,4 +23,4 @@ class RunWorkflowParams(BaseModel):
 
 
 class RunWorkflow(Command):
-    payload = RunWorkflowParams
+    payload: RunWorkflowParams
