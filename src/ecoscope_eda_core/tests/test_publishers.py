@@ -26,7 +26,7 @@ async def test_gcp_pubsub_publisher_minimal(mocker, pubsub_client_mock):
         )
     )
     await publisher.publish(messages=[run_workflow_command], topic="workflow-requests")
-
+    await publisher.close()
     # ToDo: Assert that publish was called with the correct arguments
     assert pubsub_client_mock.publish.called
 
