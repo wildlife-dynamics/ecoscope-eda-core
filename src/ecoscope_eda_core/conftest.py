@@ -1,6 +1,6 @@
 import asyncio
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock
 
 
 def async_return(result):
@@ -11,9 +11,11 @@ def async_return(result):
 
 @pytest.fixture
 def pubsub_client_mock():
-    client = MagicMock()
-    client.topic_path.return_value = "projects/ecoscope-dev/topics/workflow-requests"
-    client.publish.return_value = async_return({"messageIds": ["7061707768812258"]})
+    client = AsyncMock()
+    client.topic_path = lambda project, topic: f"projects/{project}/topics/{topic}"
+    client.publish.return_value = AsyncMock(
+        return_value={"messageIds": ["7061707768812258"]}
+    )
     client.__aenter__.return_value = async_return(client)
     client.__aexit__.return_value = async_return(None)
     client.close.return_value = async_return(None)
