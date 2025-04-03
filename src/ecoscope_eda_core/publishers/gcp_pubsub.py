@@ -77,10 +77,7 @@ class GCPPubSubPublisher(PublisherBase):
         pubsub_messages = [
             pubsub.PubsubMessage(
                 data=message.model_dump_json(exclude="attributes").encode("utf-8"),
-                ordering_key=message.attributes.pop("ordering_key", "")
-                if message.attributes
-                else "",
-                attributes=message.attributes,
+                **(message.attributes or {}),
             )
             for message in messages
         ]
