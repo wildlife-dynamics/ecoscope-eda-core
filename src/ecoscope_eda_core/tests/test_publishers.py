@@ -65,7 +65,9 @@ async def test_gcp_pubsub_publisher_minimal_as_async_ctx_mgr(
                 },
             )
         )
-    await publisher.publish(messages=[run_workflow_command], topic="workflow-requests")
+        await publisher.publish(
+            messages=[run_workflow_command], topic="workflow-requests"
+        )
     pubsub_client_mock.publish.assert_called_once()
     call_args = pubsub_client_mock.publish.call_args
     assert call_args.kwargs["topic"] == "projects/ecoscope-dev/topics/workflow-requests"
