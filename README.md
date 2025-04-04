@@ -3,9 +3,16 @@ Common schemas & utilities for event-driven workflows.
 
 ---
 ## Installation
-### Install the package using conda:
+### Install the package using conda, mamba:
 ```bash
 conda install -c https://repo.prefix.dev/ecoscope-workflows ecoscope-eda-core
+mamba install -c https://repo.prefix.dev/ecoscope-workflows ecoscope-eda-core
+```
+### ... or pixi, e.g.:
+```bash
+pixi init
+pixi project channel add https://repo.prefix.dev/ecoscope-workflows
+pixi add ecoscope-eda-core
 ```
 ### Install the package using pip:
 ```bash
