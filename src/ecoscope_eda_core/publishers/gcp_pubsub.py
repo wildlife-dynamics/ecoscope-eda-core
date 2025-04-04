@@ -5,6 +5,7 @@ from typing import List, Dict, Any, Optional
 import aiohttp
 import stamina
 from gcloud.aio import pubsub
+from gcloud.aio.auth import Token
 from .core import PublisherBase
 from ..messages import Message
 
@@ -14,7 +15,7 @@ class GCPPubSubPublisher(PublisherBase):
         self,
         project: Optional[str] = None,
         service_file: Optional[str] = None,
-        token: Optional[str] = None,
+        token: Optional[Token] = None,
         api_root: Optional[str] = None,
         timeout: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -73,10 +74,11 @@ class GCPPubSubPublisher(PublisherBase):
         """
         # Build gcp topic full name
         gcp_project = kwargs.get("project") or self.project
+        assert gcp_project, "GCP project must be provided either by project argument or GCP_PROJECT env var"
         topic = self.pubsub_client.topic_path(project=gcp_project, topic=topic)
         pubsub_messages = [
             pubsub.PubsubMessage(
-                data=message.model_dump_json(exclude="attributes").encode("utf-8"),
+                data=message.model_dump_json(exclude={"attributes"}).encode("utf-8"),
                 **(message.attributes or {}),
             )
             for message in messages

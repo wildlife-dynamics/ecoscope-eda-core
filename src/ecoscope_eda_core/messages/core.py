@@ -15,7 +15,7 @@ class Message(BaseModel):
         default_factory=lambda: datetime.now(ZoneInfo("UTC")),
         title="ISO Timestamp",
         description="The date and time when the message was created.",
-        example="2025-01-01T12:01:02+00:00",
+        examples=["2025-01-01T12:01:02+00:00"],
     )
     schema_version: str = Field(
         default=SCHEMA_VERSION,
@@ -23,14 +23,14 @@ class Message(BaseModel):
         description="Message schema version",
     )
     payload: Optional[Any] = Field(
-        default_factory=dict,
-        example="{}",
+        default_factory=dict,  # type: ignore[arg-type]
+        examples=["{}"],
         description="Message payload. This can be overwritten in specific commands or events",
     )
     attributes: Optional[Dict[str, str]] = (
         Field(  # Some message brokers such as GCP PubSub support key/value attributes
-            default_factory=dict,
-            example='{"key": "value"}',
+            default_factory=dict,  # type: ignore[arg-type]
+            examples=['{"key": "value"}'],
             description="Message attributes. This can be overwritten in specific commands or events",
         )
     )
