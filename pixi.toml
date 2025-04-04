@@ -1,0 +1,73 @@
+[workspace]
+preview = ["pixi-build"]
+authors = ["Mariano M <marianom@earthranger.com>"]
+channels = [
+    "https://prefix.dev/pixi-build-backends",
+    "https://prefix.dev/conda-forge",
+    "https://repo.prefix.dev/ecoscope-workflows/"
+]
+name = "ecoscope-eda-core"
+platforms = ['linux-64', 'linux-aarch64', 'osx-arm64']
+version = "0.1.0"
+
+[feature.mypy]
+dependencies = { mypy = "*" }
+tasks = { mypy = "mypy src/ecoscope_eda_core/" }
+
+[feature.test]
+dependencies = { pytest = "*" }
+tasks = { pytest = "pytest src/ecoscope_eda_core/ -vv" }
+
+[feature.py310]
+dependencies = { python = "3.10.*" }
+
+[feature.py311]
+dependencies = { python = "3.11.*" }
+
+[feature.py312]
+dependencies = { python = "3.12.*" }
+
+[environments]
+default = { solve-group = "default" }
+py310 = { features = ["test", "py310", "mypy"], solve-group = "py310" }
+py311 = { features = ["test", "py311", "mypy"], solve-group = "py311" }
+py312 = { features = ["test", "py312", "mypy"], solve-group = "py312" }
+
+[tasks]
+mypy-310 = { cmd = "./dev/mypy.sh 310"}
+mypy-311 = { cmd = "./dev/mypy.sh 311"}
+mypy-312 = { cmd = "./dev/mypy.sh 312"}
+mypy-all = { cmd = "echo 'mypy-all' complete", depends-on = [
+    "mypy-310",
+    "mypy-311",
+    "mypy-312",
+]}
+pytest-310 = { cmd = "./dev/pytest-src.sh 310"}
+pytest-311 = { cmd = "./dev/pytest-src.sh 311"}
+pytest-312 = { cmd = "./dev/pytest-src.sh 312"}
+pytest-all = { cmd = "echo 'pytest-all' complete", depends-on = [
+    "pytest-310",
+    "pytest-311",
+    "pytest-312",
+]}
+
+[dependencies]
+python = ">=3.10,<=3.12"
+pydantic = ">=2.0.0"
+gcloud-aio-pubsub = ">=6.1.0,<7"
+stamina = ">=25.1.0,<26"
+pytest = ">=8.3.5,<9"
+pytest-mock = ">=3.14.0,<4"
+pytest-asyncio = ">=0.26.0,<0.27"
+
+[package]
+name = "ecoscope-eda-core"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-python", version = "0.1.*" }
+
+
+[package.host-dependencies]
+python = ">=3.10,<=3.12"
+hatchling = "==1.26.3"
