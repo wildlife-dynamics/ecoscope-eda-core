@@ -74,3 +74,12 @@ pixi build
 pip install build
 python -m build
 ```
+
+### Release
+To release packages for `ecoscope-eda-core` checkout the `main` branch, and then push a new tag:
+   ```bash
+   $ git tag v0.1.1
+   $ git push origin --tags
+   ```
+The `publish.yml` github workflow will then build and push a new release to both GitHub Releases with conda and pypi packages attached, and will also publish to prefix.dev at
+https://prefix.dev/channels/ecoscope-workflows
