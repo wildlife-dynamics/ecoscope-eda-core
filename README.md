@@ -81,5 +81,5 @@ To release packages for `ecoscope-eda-core` checkout the `main` branch, and then
    $ git tag v0.1.1
    $ git push origin --tags
    ```
-The `publish.yml` github workflow will then build and push a new release to both GitHub Releases with conda and pypi packages attached, and will also publish to prefix.dev at
+The `publish.yml` github workflow will then create a new release in GitHub Releases with conda and pypi packages attached, and will also publish to prefix.dev at
 https://prefix.dev/channels/ecoscope-workflows
