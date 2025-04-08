@@ -8,7 +8,6 @@ channels = [
 ]
 name = "ecoscope-eda-core"
 platforms = ['linux-64', 'linux-aarch64', 'osx-arm64']
-version = "0.1.0"
 
 [feature.mypy]
 dependencies = { mypy = "*" }
@@ -62,7 +61,7 @@ pytest-asyncio = ">=0.26.0,<0.27"
 
 [package]
 name = "ecoscope-eda-core"
-version = "0.1.0"
+version = "0.1.1"
 
 [package.build]
 backend = { name = "pixi-build-python", version = "0.1.*" }
