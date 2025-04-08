@@ -78,7 +78,8 @@ jobs:
 
   github-release:
     needs:
-      - publish-to-prefix
+      - build-conda
+      - build-pypi
     if: startsWith(github.ref, 'refs/tags/')
 
     permissions:
