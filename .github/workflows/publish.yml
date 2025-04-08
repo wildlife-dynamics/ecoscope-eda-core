@@ -1,0 +1,115 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+rc[0-9]+"
+    branches:
+      - "main"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIXI_VERSION: v0.44.0
+
+jobs:
+  build-conda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pixi
+        run: curl -fsSL https://pixi.sh/install.sh | bash && echo "$HOME/.pixi/bin" >> $GITHUB_PATH
+      - name: Build .conda package
+        run: pixi build
+      - name: Upload conda package
+        uses: actions/upload-artifact@v4
+        with:
+          name: conda-package
+          path: |
+            ./ecoscope-eda-core-*.conda
+          if-no-files-found: error
+          compression-level: 0
+
+  build-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build .wheel package
+        run: python -m build
+      - name: Upload wheel package
+        uses: actions/upload-artifact@v4
+        with:
+          name: pypi-package
+          path: |
+            ./dist/ecoscope_eda_core-*
+          if-no-files-found: error
+          compression-level: 0
+
+  publish-to-prefix:
+    needs:
+      - build-conda
+    if: startsWith(github.ref, 'refs/tags/')
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download conda package
+        uses: actions/download-artifact@v4
+        with:
+          name: conda-package
+          path: /tmp/ecoscope-eda-core/conda-release/artifacts
+      - name: Log conda channel contents
+        run: ls -lR /tmp/ecoscope-eda-core/conda-release/artifacts
+
+      - uses: actions/checkout@v4
+      - name: Install pixi
+        run: curl -fsSL https://pixi.sh/install.sh | bash && echo "$HOME/.pixi/bin" >> $GITHUB_PATH
+      - name: Publish to prefix.dev
+        env:
+          PREFIX_API_KEY: ${{ secrets.PREFIX_API_KEY }}
+        run: pixi upload repo.prefix.dev/ecoscope-workflows /tmp/ecoscope-eda-core/conda-release/artifacts/*.conda
+
+  github-release:
+    needs:
+      - publish-to-prefix
+    if: startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download conda package
+        uses: actions/download-artifact@v4
+        with:
+          name: conda-package
+          path: /tmp/ecoscope-eda-core/gh-release/artifacts
+      - name: Download pypi package
+        uses: actions/download-artifact@v4
+        with:
+          name: pypi-package
+          path: /tmp/ecoscope-eda-core/gh-release/artifacts
+      - name: Log release contents
+        run: ls -lR /tmp/ecoscope-eda-core/gh-release/artifacts
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.ECOSCOPE_ELEBOT_PAT }}
+        run: >-
+          gh release create
+          '${{ github.ref_name }}'
+          --repo '${{ github.repository }}'
+          --generate-notes
+      - name: Upload artifacts to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.ECOSCOPE_ELEBOT_PAT }}
+        run: >-
+          gh release upload
+          '${{ github.ref_name }}'
+          /tmp/ecoscope-eda-core/gh-release/artifacts**
+          --repo '${{ github.repository }}'
