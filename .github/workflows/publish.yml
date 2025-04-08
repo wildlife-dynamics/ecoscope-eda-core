@@ -71,10 +71,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install pixi
         run: curl -fsSL https://pixi.sh/install.sh | bash && echo "$HOME/.pixi/bin" >> $GITHUB_PATH
+      - name: Login to prefix.dev
+        run: pixi auth login prefix.dev --token ${{ secrets.PREFIX_API_KEY }}
       - name: Publish to prefix.dev
-        env:
-          PREFIX_API_KEY: ${{ secrets.PREFIX_API_KEY }}
-        run: pixi upload repo.prefix.dev/ecoscope-workflows /tmp/ecoscope-eda-core/conda-release/artifacts/*.conda
+        run: pixi upload -v https://prefix.dev/api/v1/upload/ecoscope-workflows /tmp/ecoscope-eda-core/conda-release/artifacts/*.conda
 
   github-release:
     needs:
