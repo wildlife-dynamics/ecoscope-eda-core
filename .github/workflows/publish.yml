@@ -117,5 +117,5 @@ jobs:
         run: >-
           gh release upload
           '${{ github.ref_name }}'
-          /tmp/ecoscope-eda-core/gh-release/artifacts**
+          /tmp/ecoscope-eda-core/gh-release/artifacts/**
           --repo '${{ github.repository }}'
