@@ -37,9 +37,7 @@ from ecoscope_eda_core.messages import RunWorkflow, RunWorkflowParams
 # Create a command message
 run_workflow_command = RunWorkflow(
     payload=RunWorkflowParams(
-        conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-        conda_package="events",
-        conda_package_version="1.2.3",
+        match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
         command="run",
         invoker_kwargs={
             "mock_io": True,
