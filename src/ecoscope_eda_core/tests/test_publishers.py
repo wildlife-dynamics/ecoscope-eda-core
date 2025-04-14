@@ -15,9 +15,7 @@ async def test_gcp_pubsub_publisher_minimal(mocker, pubsub_client_mock):
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-            conda_package="custom-events-workflow-pkg",
-            conda_package_version="0.0.65",
+            match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
             command="run",
             invoker_kwargs={
                 "mock_io": True,
@@ -54,9 +52,7 @@ async def test_gcp_pubsub_publisher_minimal_as_async_ctx_mgr(
     async with GCPPubSubPublisher(project="ecoscope-dev") as publisher:
         run_workflow_command = RunWorkflow(
             payload=RunWorkflowParams(
-                conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-                conda_package="custom-events-workflow-pkg",
-                conda_package_version="0.0.65",
+                match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
                 command="run",
                 invoker_kwargs={
                     "mock_io": True,
@@ -93,9 +89,7 @@ async def test_gcp_pubsub_publisher_with_attributes(mocker, pubsub_client_mock):
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-            conda_package="custom-events-workflow-pkg",
-            conda_package_version="0.0.65",
+            match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
             command="run",
             invoker_kwargs={
                 "mock_io": True,
@@ -135,9 +129,7 @@ async def test_gcp_pubsub_publisher_with_custom_timeout(mocker, pubsub_client_mo
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-            conda_package="custom-events-workflow-pkg",
-            conda_package_version="0.0.65",
+            match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
             command="run",
             invoker_kwargs={
                 "mock_io": True,
@@ -176,9 +168,7 @@ async def test_gcp_pubsub_publisher_retries_on_request_timeout(
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-            conda_package="custom-events-workflow-pkg",
-            conda_package_version="0.0.65",
+            match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
             command="run",
             invoker_kwargs={
                 "mock_io": True,
@@ -204,9 +194,7 @@ async def test_gcp_pubsub_publisher_retries_on_connect_error(
     publisher = GCPPubSubPublisher(project="ecoscope-dev")
     run_workflow_command = RunWorkflow(
         payload=RunWorkflowParams(
-            conda_channel="https://repo.prefix.dev/ecoscope-workflows/",
-            conda_package="custom-events-workflow-pkg",
-            conda_package_version="0.0.65",
+            match_spec="prefix.dev/ecoscope-workflows::events=0.65.2",
             command="run",
             invoker_kwargs={
                 "mock_io": True,
