@@ -7,7 +7,7 @@ from .core import Command
 
 class InvokerType(str, Enum):
     BLOCKING_SUBPROCESS = "BlockingLocalSubprocessInvoker"
-    K8S_JOB = "K8sJobInvoker"
+    CLOUD_BATCH = "CloudBatchInvoker"
 
 
 class RunWorkflowParams(BaseModel):
