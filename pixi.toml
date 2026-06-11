@@ -62,7 +62,7 @@ name = "ecoscope-eda-core"
 version = "0.2.3"
 
 [package.build]
-backend = { name = "pixi-build-python", version = "0.1.*" }
+backend = { name = "pixi-build-python", version = "0.4.*" }
 
 
 [package.host-dependencies]
