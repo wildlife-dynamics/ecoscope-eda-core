@@ -78,7 +78,7 @@ jobs:
       - name: Login to prefix.dev
         run: pixi auth login prefix.dev --token ${{ secrets.PREFIX_API_KEY }}
       - name: Publish to prefix.dev
-        run: pixi upload prefix -v https://prefix.dev/api/v1/upload/ecoscope-workflows /tmp/ecoscope-eda-core/conda-release/artifacts/*.conda
+        run: pixi upload prefix -c ecoscope-workflows -v /tmp/ecoscope-eda-core/conda-release/artifacts/*.conda
 
   github-release:
     needs:
