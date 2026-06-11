@@ -8,6 +8,7 @@ from .core import Command
 class InvokerType(str, Enum):
     BLOCKING_SUBPROCESS = "BlockingLocalSubprocessInvoker"
     CLOUD_BATCH = "CloudBatchInvoker"
+    CLOUD_RUN_JOBS_SANDBOX = "CloudRunJobsSandboxInvoker"
 
 
 class RunWorkflowParams(BaseModel):
