@@ -33,19 +33,27 @@ jobs:
   mypy:
     if: github.actor != 'ecoscope-elebot'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['310', '311', '312', '313']
     steps:
       - uses: actions/checkout@v4
       - name: Install pixi
         run: curl -fsSL https://pixi.sh/install.sh | bash && echo "$HOME/.pixi/bin" >> $GITHUB_PATH
       - name: Mypy
-        run: pixi run --manifest-path pixi.toml mypy-312
+        run: pixi run --manifest-path pixi.toml mypy-${{ matrix.python }}
 
   test:
     if: github.actor != 'ecoscope-elebot'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['310', '311', '312', '313']
     steps:
       - uses: actions/checkout@v4
       - name: Install pixi
         run: curl -fsSL https://pixi.sh/install.sh | bash && echo "$HOME/.pixi/bin" >> $GITHUB_PATH
       - name: Test
-        run: pixi run --manifest-path pixi.toml pytest-312
+        run: pixi run --manifest-path pixi.toml pytest-${{ matrix.python }}
